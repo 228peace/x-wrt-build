@@ -4,7 +4,7 @@
 #   Author: ptpt52
 #=================================================
 
-name: x-wrt-25.01_b202502130018=x86_64-docker
+name: x-wrt-25.01_b202502130018=rockchip-armv8
 
 on: 
   release:
@@ -71,7 +71,7 @@ jobs:
         cp release.tag x-wrt/
         cd x-wrt
         echo -e "$(nproc) thread build."
-        TARGET=x86_64-docker sh build.sh $(nproc)
+        TARGET=rockchip-armv8 sh build.sh $(nproc)
 
     - name : Upload make.log if failure
       uses: actions/upload-artifact@v4
@@ -83,5 +83,5 @@ jobs:
     - name : Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: x-wrt-25.01_b202502130018=x86_64-docker
+        name: x-wrt-25.01_b202502130018=rockchip-armv8
         path: x-wrt/rom/
