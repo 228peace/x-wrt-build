@@ -20,6 +20,17 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 2048
+        swap-size-mb: 1024
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
+        remove-codeql: 'true'
+        remove-docker-images: 'true'
+
     - name: Checkout Repository
       uses: actions/checkout@v4
 
@@ -29,25 +40,6 @@ jobs:
       run: |
         echo "Updating system and installing dependencies..."
         sudo -E apt-get update
-        
-        # 移除不必要的預裝軟體，釋放空間 (避免磁碟空間不足導致編譯失敗)
-        sudo apt-get remove --purge -y \
-          azure-cli \
-          ghc* \
-          zulu* \
-          hhvm \
-          llvm* \
-          firefox \
-          google* \
-          dotnet* \
-          powershell \
-          openjdk* \
-          mysql* \
-          php* || true
-        
-        sudo apt-get clean
-        sudo apt-get autoremove --purge -y
-        sudo docker system prune -a -f --volumes || true
         
         # 安裝編譯依賴
         sudo -E apt-get -y install python3-pyelftools build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc-s1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
